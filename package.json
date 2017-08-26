@@ -1,5 +1,5 @@
 {
-  "name": "react-portal",
+  "name": "@cospired/react-portal",
   "version": "3.0.0",
   "description": "React component for transportation of modals, lightboxes, loading bars... to document.body",
   "main": "lib/index.js",
