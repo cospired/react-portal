@@ -14,6 +14,7 @@ export default class Portal extends React.Component {
     this.closePortal = this.closePortal.bind(this);
     this.handleOutsideMouseClick = this.handleOutsideMouseClick.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
+    this.removePortal = this.removePortal.bind(this);
     this.portal = null;
     this.node = null;
   }
@@ -77,20 +78,27 @@ export default class Portal extends React.Component {
   }
 
   openPortal(props = this.props) {
-    this.setState({ active: true });
-    this.renderPortal(props, true);
+    this.setState({ active: true }, () =>
+      this.renderPortal(props, true)
+    );
+  }
+
+  removePortal() {
+    if (this.node) {
+      ReactDOM.unmountComponentAtNode(this.node);
+      document.body.removeChild(this.node);
+    }
+    this.portal = null;
+    this.node = null;
   }
 
   closePortal(isUnmounted = false) {
     const resetPortalState = () => {
-      if (this.node) {
-        ReactDOM.unmountComponentAtNode(this.node);
-        document.body.removeChild(this.node);
-      }
-      this.portal = null;
-      this.node = null;
+
       if (isUnmounted !== true) {
-        this.setState({ active: false });
+        this.setState({ active: false }, this.removePortal);
+      } else {
+        this.removePortal();
       }
     };
 
